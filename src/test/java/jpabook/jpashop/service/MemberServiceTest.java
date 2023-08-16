@@ -46,14 +46,7 @@ class MemberServiceTest {
 
         //when
         memberService.join(member1);
-        try {
-            memberService.join(member2); // 예외가 발생해야 한다!
-        } catch (IllegalStateException e) {
-            return;
-        }
-
-        //then
-        fail("예외가 발생해야 한다"); // 오면 안 된다
+        assertThrows(IllegalStateException.class, () -> memberService.join(member2));
     }
 
 }
