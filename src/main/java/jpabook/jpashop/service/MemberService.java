@@ -2,6 +2,7 @@ package jpabook.jpashop.service;
 
 import jpabook.jpashop.domain.Member;
 import jpabook.jpashop.repository.MemberRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,15 +11,10 @@ import java.util.List;
 
 @Service
 @Transactional(readOnly = true) // JPA 데이터 변경은 다 트랜잭션 안에서 일어나야 함, JPA가 조회 성능 최적화
+@RequiredArgsConstructor // final 필드인 애들 생성자 만들어줌
 public class MemberService {
 
     private final MemberRepository memberRepository; // 컴파일 시점에 에러 확인 가능하므로 final
-
-    @Autowired
-    public MemberService(MemberRepository memberRepository) {
-        // 스프링이 뜰 때 생성자에서 Injection
-        this.memberRepository = memberRepository;
-    }
 
     /**
     * 회원 가입
