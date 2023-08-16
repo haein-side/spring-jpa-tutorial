@@ -28,10 +28,19 @@ public class Order {
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<>();
+    // Order 저장할 때 orderItems 값도 같이 persist 해줌 (영속성 전이)
+    /*
+    * Parent parent = new Parent();
+            parent.addchild(child1);
+            parent.addchild(child2);
 
-    @OneToOne(fetch = FetchType.LAZY)
+            em.persist(parent);
+    * */
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "delivery_id")
     private Delivery delivery;
+    // Order 저장할 때 delivery 값도 같이 persist 해줌
 
     private LocalDateTime orderDate;
 
