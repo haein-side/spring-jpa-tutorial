@@ -16,3 +16,4 @@ spring:
 logging:
   level:
     org.hibernate.SQL: debug # log
+    org.hibernate.type: trace # query parameter
