@@ -24,7 +24,7 @@ public class Category {
                 inverseJoinColumns = @JoinColumn(name = "item_id")) // 중간 테이블
     private List<Item> items = new ArrayList<>();
 
-    @ManyToOne // self join 예제 : self로 양방향 연관관계를 걸었다고 생각하면 됨
+    @ManyToOne(fetch = FetchType.LAZY) // self join 예제 : self로 양방향 연관관계를 걸었다고 생각하면 됨
     @JoinColumn(name = "parent_id")
     private Category parent;
 

@@ -17,7 +17,7 @@ public class Order {
     @Column(name = "order_id")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id") // FK 이름이 member_id가 됨
     private Member member;
 
@@ -26,10 +26,10 @@ public class Order {
     // 외래키를 가지고 있는 쪽을 연관관계의 주인으로 설정해주기!
     // 객체는 2군데, DB는 1군데만 변경하면 됨 - 이것을 맞춰준 것
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<>();
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "delivery_id")
     private Delivery delivery;
 
