@@ -13,7 +13,7 @@ import javax.persistence.EntityManager;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@Transactional // 데이터 변경 시 필요, Rollback 됨
+@Transactional
 class MemberServiceTest {
 
     @Autowired MemberService memberService;
@@ -21,6 +21,7 @@ class MemberServiceTest {
     @Autowired EntityManager em;
 
     @Test
+    @Rollback(false) // DB에 들어갔는지 확인 가능
     public void 회원가입 () throws Exception {
         //given
         Member member = new Member();
@@ -37,10 +38,22 @@ class MemberServiceTest {
     @Test
     public void 중복_회원_예외() throws Exception {
         //given
+        Member member1 = new Member();
+        member1.setName("kim");
+
+        Member member2 = new Member();
+        member2.setName("kim");
 
         //when
+        memberService.join(member1);
+        try {
+            memberService.join(member2); // 예외가 발생해야 한다!
+        } catch (IllegalStateException e) {
+            return;
+        }
 
         //then
+        fail("예외가 발생해야 한다"); // 오면 안 된다
     }
 
 }
