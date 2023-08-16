@@ -46,4 +46,21 @@ public class Order {
 
     @Enumerated(EnumType.STRING) // Enum 타입 넣을 때 주의할 것!
     private OrderStatus status;
+
+    // == 연관관계 편의 메소드 for 양방향 연관관계 == //
+    public void setMember(Member member) {
+        this.member = member;
+        member.getOrders().add(this);
+    }
+
+    public void addOrderItem(OrderItem orderItem) {
+        orderItems.add(orderItem);
+        orderItem.setOrder(this);
+    }
+
+    public void setDelivery(Delivery delivery) {
+        this.delivery = delivery;
+        delivery.setOrder(this);
+    }
+
 }
