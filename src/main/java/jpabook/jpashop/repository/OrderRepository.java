@@ -21,13 +21,8 @@ public class OrderRepository {
         return em.find(Order.class, id);
     }
 
-    public List<Order> findAll(OrderSearch orderSearch) {
-        em.createQuery("select o from Order o join o.member m" +
-                " where o.status = :status" +
-                " and m.name like :name", Order.class)
-                .setParameter("status", orderSearch.getOrderStatus())
-                .setParameter("name", orderSearch.getMemberName())
-                .setMaxResults(1000) //최대 1000건
-                .getResultList();
-    }
+    //QueryDSL을 이용해서 동적쿼리 만드는 것을 권장
+//    public List<Order> findAll(OrderSearch orderSearch) {
+//        em.createQuery("select o from Order o join o.member m");
+//    }
 }
