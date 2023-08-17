@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "dtype")
-@Getter
+@Getter @Setter
 public abstract class Item {
 
     @Id
@@ -40,6 +40,7 @@ public abstract class Item {
     /**
      * stock 감소
      */
+    //TODO removeStock에 대한 단위테스트 있는 게 매우 중요!
     public void removeStock(int quantity) {
         int restStock = this.stockQuantity - quantity;
 
