@@ -1,0 +1,22 @@
+spring:
+#  datasource:
+#    url: jdbc:h2:mem:test
+#    username: sa
+#    password: haein
+#    driver-class-name: org.h2.Driver
+#
+#  jpa:
+#    hibernate:
+#      ddl-auto: create
+#    properties:
+#      hibernate:
+##        show_sql: true # system.out
+#        format_sql: true
+# 스프링 부트는 별도의 설정이 없으면 메모리 모드로 돌림
+# 스프링 부트는 ddl-auto 가 기본적으로 create-drop : 마지막에 깨끗하게 초기화
+# 메모리 모드는 WAS가 내려가면 끝남
+
+logging:
+  level:
+    org.hibernate.SQL: debug # log
+    org.hibernate.type: trace # query parameter
