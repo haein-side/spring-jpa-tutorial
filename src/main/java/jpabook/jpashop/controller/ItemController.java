@@ -69,17 +69,20 @@ public class ItemController {
 
     //TODO url 가지고 장난 많이 치기 때문에 사용자가 권한이 있는지 서비스나 앞단에서 체크하는 로직 필요
     @PostMapping("items/{itemId}/edit")
-    public String updateItem(@ModelAttribute("form") BookForm form) { //@ModelAttribute : 들어오는 @RequestParam 파라미터 -> BookForm에 set
+    public String updateItem(@PathVariable Long itemId, @ModelAttribute("form") BookForm form) { //@ModelAttribute : 들어오는 @RequestParam 파라미터 -> BookForm에 set
 
-        Book book = new Book();
-        book.setId(form.getId());
-        book.setName(form.getName());
-        book.setPrice(form.getPrice());
-        book.setStockQuantity(form.getStockQuantity());
-        book.setAuthor(form.getAuthor());
-        book.setIsbn(form.getIsbn());
+        // 어설프게 엔티티 만드는 게 아니라, 내가 필요한 것들만 넘겨야 함 (별로인 방법)
+//        Book book = new Book();
+//        book.setId(form.getId());
+//        book.setName(form.getName());
+//        book.setPrice(form.getPrice());
+//        book.setStockQuantity(form.getStockQuantity());
+//        book.setAuthor(form.getAuthor());
+//        book.setIsbn(form.getIsbn());
 
-        itemService.saveItem(book);
+        //service 계층에 넘길 데이터가 많으면 DTO 만들어서 넘길 것
+        //id를 명확하게 보내야 Service의 Transaction 안에서 엔티티 조회가 되고 영속상태가 된다 -> 값 변경해야 변경 감지 일어남
+        itemService.updateItem(itemId, form.getName(), form.getPrice(), form.getStockQuantity());
         return "redirect:/items";
     }
 
