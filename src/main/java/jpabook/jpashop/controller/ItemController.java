@@ -54,6 +54,8 @@ public class ItemController {
     @GetMapping("/items/{itemId}/edit")
     public String updateItemForm(@PathVariable("itemId") Long itemId, Model model) {
         Book item = (Book) itemService.findOne(itemId);
+        // find() Returns : the found entity instance or null if the entity does not exist
+        // item 영속 상태
 
         BookForm form = new BookForm();
         form.setId(item.getId());
@@ -72,8 +74,11 @@ public class ItemController {
     public String updateItem(@PathVariable Long itemId, @ModelAttribute("form") BookForm form) { //@ModelAttribute : 들어오는 @RequestParam 파라미터 -> BookForm에 set
 
         // 어설프게 엔티티 만드는 게 아니라, 내가 필요한 것들만 넘겨야 함 (별로인 방법)
-//        Book book = new Book();
-//        book.setId(form.getId());
+
+//        Book book = new Book(); //준영속 엔티티 : 식별자가 DB에 있는 객체
+
+//        book.setId(form.getId()); //JPA가 식별할 수 있는 id가 세팅되어 있음 == JPA로 DB에 한 번 들어갔다 나온 객체
+        // book 객체는 이미 영속 엔티티였던 form의 id값을 set하였으므로 준영속 엔티티
 //        book.setName(form.getName());
 //        book.setPrice(form.getPrice());
 //        book.setStockQuantity(form.getStockQuantity());
