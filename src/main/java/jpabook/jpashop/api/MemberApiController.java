@@ -26,6 +26,21 @@ public class MemberApiController {
         return new CreateMemberResponse(id);
     }
 
+    @PostMapping("/api/v2/members")
+    public CreateMemberResponse saveMemberV2(@RequestBody @Valid CreateMemberRequest request) {
+        Member member = new Member();
+        member.setName(request.getName()); // 엔티티 변경 시 여기서 컴파일 오류가 남 -> 수정 시 api는 영향 안 받음
+
+        Long id = memberService.join(member);
+        return new CreateMemberResponse(id);
+    }
+
+    @Data
+    static class CreateMemberRequest {
+        private String name;
+    }
+
+
     @Data
     static class CreateMemberResponse {
         private Long id;
