@@ -2,11 +2,10 @@ package jpabook.jpashop.api;
 
 import jpabook.jpashop.domain.Member;
 import jpabook.jpashop.service.MemberService;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
@@ -37,8 +36,32 @@ public class MemberApiController {
         return new CreateMemberResponse(id);
     }
 
+    @PutMapping("/api/v2/members/{id}")
+    public UpdateMemberResponse updateMemberResponseV2(
+            @PathVariable("id") Long id,
+            @RequestBody @Valid UpdateMemberRequest request) {
+
+        // 수정 시 변경감지를 사용하자!
+        memberService.update(id, request.getName());
+        Member findMember = memberService.findOne(id); // command와 query를 분리한다.
+        return new UpdateMemberResponse(findMember.getId(), findMember.getName());
+    }
+
+    @Data
+    static class UpdateMemberRequest {
+        private String name;
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class UpdateMemberResponse {
+        private Long id;
+        private String name;
+    }
+
     @Data
     static class CreateMemberRequest {
+
         @NotEmpty // 각각의 API에서 요구하는 validation들을 DTO에 따로 넣으면 됨! -> Entity에 넣는 것보다 나음 (Entity는 여러 곳에서 사용)
         private String name;
     }
