@@ -22,7 +22,7 @@ public class Order {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id") // FK 이름이 member_id가 됨
-    private Member member = new ByteBuddyInterceptor();
+    private Member member;
 
     // 연관관계 주인이란?
     // 어떤 값이 변경되었을 때 Member와 Order 테이블 중 어떤 FK를 변경해줄거냐?

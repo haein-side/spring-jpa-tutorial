@@ -12,8 +12,8 @@ import java.util.List;
 /**
  * xToOne(ManyToOne, OneToOne)
  * Order
- * Order -> Member (ManyToOne)
- * Order -> Delivery (OneToOne)
+ * Order -> Member - LAZY (ManyToOne)
+ * Order -> Delivery - LAZY (OneToOne)
  */
 @RestController
 @RequiredArgsConstructor
