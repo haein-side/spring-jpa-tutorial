@@ -45,6 +45,6 @@ public class MemberService {
     @Transactional
     public void update(Long id, String name) {
         Member member = memberRepository.findOne(id);
-        member.setName(name);
+        member.setName(name); // 영속성 컨텍스트에 올라와있는 객체는 변경감지 (after flush and commit)
     }
 }
