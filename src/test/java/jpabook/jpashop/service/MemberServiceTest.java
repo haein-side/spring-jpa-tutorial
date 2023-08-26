@@ -9,6 +9,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -34,6 +35,8 @@ class MemberServiceTest {
         em.flush();
         assertEquals(member, memberRepository.findOne(savedId)); // 같은 영속성 컨텍스트에서 pk값이 같은 엔티티는 딱 하나로만 관리됨
     }
+
+    new EntityManagerFactory
 
     @Test
     public void 중복_회원_예외() throws Exception {
