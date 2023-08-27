@@ -22,7 +22,7 @@ public class OrderItem {
     @JoinColumn(name = "item_id")
     private Item item;
 
-    @JsonIgnore
+    @JsonIgnore //양방향 연관관계는 반드시 @JsonIgnore 달아줘야 함!
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     private Order order;
