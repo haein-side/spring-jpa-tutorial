@@ -55,10 +55,7 @@ public class OrderApiController {
         private LocalDateTime orderDate;
         private OrderStatus orderStatus;
         private Address address;
-        private List<OrderItem> orderItems; // DTO 안에 Entity를 래핑하면 안 됨! DTO와 Entity의 의존관계를 완전히 끊어놔야 함!
-        // 엔티티가 외부에 노출되어 버림..
-        // orderItem도 DTO로 만들어야 한다
-        // orderItem 엔티티 수정 시 화면 다 바뀌어야 함 (orderItem 필드명 수정 시 Controller도 바뀌게 됨)
+        private List<OrderItemDTO> orderItems; // OrderItemDTO로 보냄
 
         public OrderDTO(Order order) {
             orderId = order.getId();
@@ -66,9 +63,25 @@ public class OrderApiController {
             orderDate = order.getOrderDate();
             orderStatus = order.getStatus();
             address = order.getDelivery().getAddress();
-            order.getOrderItems().stream().forEach(o -> o.getItem().getName());
-            orderItems = order.getOrderItems();
+            orderItems = order.getOrderItems().stream() // OrderItem 엔티티를 OrderItemDTO로 변환하고, 변환된 결과를 컬렉션으로 수집
+                    .map(orderItem -> new OrderItemDTO(orderItem))
+                    .collect(Collectors.toList());
         }
     }
+
+    @Getter
+    static class OrderItemDTO {
+
+        private String itemName; // 상품명
+        private int orderPrice; // 주문가격
+        private int count; // 주문수량
+
+        public OrderItemDTO(OrderItem orderItem) {
+            itemName = orderItem.getItem().getName();
+            orderPrice = orderItem.getOrderPrice();
+            count = orderItem.getCount();
+        }
+    }
+
 
 }
