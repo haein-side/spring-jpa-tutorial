@@ -72,9 +72,9 @@ public class OrderApiController {
     @Getter
     static class OrderItemDTO {
 
-        private String itemName; // 상품명
-        private int orderPrice; // 주문가격
-        private int count; // 주문수량
+        private String itemName; //상품명
+        private int orderPrice; //주문가격
+        private int count; //주문수량
 
         public OrderItemDTO(OrderItem orderItem) {
             itemName = orderItem.getItem().getName();
