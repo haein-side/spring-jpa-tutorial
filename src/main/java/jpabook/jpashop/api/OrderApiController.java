@@ -56,6 +56,9 @@ public class OrderApiController {
         private OrderStatus orderStatus;
         private Address address;
         private List<OrderItem> orderItems; // DTO 안에 Entity를 래핑하면 안 됨! DTO와 Entity의 의존관계를 완전히 끊어놔야 함!
+        // 엔티티가 외부에 노출되어 버림..
+        // orderItem도 DTO로 만들어야 한다
+        // orderItem 엔티티 수정 시 화면 다 바뀌어야 함 (orderItem 필드명 수정 시 Controller도 바뀌게 됨)
 
         public OrderDTO(Order order) {
             orderId = order.getId();
