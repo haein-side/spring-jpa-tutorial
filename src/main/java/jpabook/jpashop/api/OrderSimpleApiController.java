@@ -5,16 +5,15 @@ import jpabook.jpashop.domain.Order;
 import jpabook.jpashop.domain.OrderStatus;
 import jpabook.jpashop.repository.OrderRepository;
 import jpabook.jpashop.repository.OrderSearch;
-import lombok.Data;
-import lombok.Getter;
+import jpabook.jpashop.repository.OrderSimpleQueryDTO;
 import lombok.RequiredArgsConstructor;
+import lombok.Data;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.time.LocalDateTime;
 
 /**
  * xToOne(ManyToOne, OneToOne)
@@ -56,10 +55,16 @@ public class OrderSimpleApiController {
                 .map(o -> new SimpleOrderDTO(o))
                 .collect(Collectors.toList());
 
-        return result;
+        return result; // 엔티티를 조회함 -> 재사용성이 좋음 - 데이터 변경 가능
     }
 
-        @Data
+    @GetMapping("/api/v4/simple-orders")
+    public List<OrderSimpleQueryDTO> ordersV4() { // v3 : Entity -> DTO로 변환 vs. v4 : 바로 DTO로 조회 (원하는 컬럼만 가져옴 - SQL작성해서)
+        return orderRepository.findOrderDTOs(); // DTO를 사용하여 재사용성이 떨어짐, 성능은 좋음 - 데이터 변경 불가 (DTO일 뿐이기 때문)
+        // but 성능차이가 그렇게 크게 나지 않음 - 성능 차이가 많이 나는 부분은 join, where쪽임 (select이 아니라) -> select 절 20-30절 정도 되는 경우 성능테스트를 통해 고려해보아야
+    }
+
+    @Data
     static class SimpleOrderDTO {
         private Long orderId;
         private  String name;
@@ -75,6 +80,8 @@ public class OrderSimpleApiController {
             address = order.getDelivery().getAddress(); // 쿼리 총 2번 실행됨 LAZY 초기화
         }
     }
+
+
 
 
 }

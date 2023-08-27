@@ -101,4 +101,15 @@ public class OrderRepository {
                         " join fetch o.delivery d", Order.class
         ).getResultList();
     }
+
+    // V4 : API 스펙에 맞춰서 repository에 작성했다는 단점
+    // repository는 객체(엔티티) 그래프를 가져올 때 사용되어야 -> repository가 화면을 의존하므로 안 좋음
+    public List<OrderSimpleQueryDTO> findOrderDTOs() {
+        return em.createQuery(
+                "select new jpabook.jpashop.repository.OrderSimpleQueryDTO(o.id, m.name, o.orderDate, o.status, d.address) from Order o" +
+                        " join o.member m" +
+                        " join o.delivery d", OrderSimpleQueryDTO.class)
+                .getResultList();
+
+    }
 }
