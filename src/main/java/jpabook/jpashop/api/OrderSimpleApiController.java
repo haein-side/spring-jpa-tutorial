@@ -49,7 +49,17 @@ public class OrderSimpleApiController {
         return result;
     }
 
-    @Data
+    @GetMapping("/api/v3/simple-orders")
+    public List<SimpleOrderDTO> ordersV3() { //Patch Join 적용 -> 쿼리 한 번 나감 - inner join으로 orders 안에 member와 delivery가 같이 조회되어 들어옴(LAZY 안 일어남)
+        List<Order> orders = orderRepository.findAllWithMemberDelivery();
+        List<SimpleOrderDTO> result = orders.stream()
+                .map(o -> new SimpleOrderDTO(o))
+                .collect(Collectors.toList());
+
+        return result;
+    }
+
+        @Data
     static class SimpleOrderDTO {
         private Long orderId;
         private  String name;
