@@ -12,6 +12,7 @@ spring:
       hibernate:
 #        show_sql: true # system.out
         format_sql: true
+        default_batch_fetch_size: 100 # in query(의 개수 설정)로 db에 있는 userA와 userB의 orderItems를 한 번에 가져온 것!
 
 logging:
   level:

@@ -120,4 +120,14 @@ public class OrderRepository {
         //JPA에서 distinct의 역할은 application에 가져와서 id값이 같으면 그냥 중복처리해서 줄여줌
         //1. db에 distinct 날려줌 2. id같으면 중복 날려서 collection에 담아줌
     }
+
+    public List<Order> findAllWithMemberDelivery(int offset, int limit) {
+        return em.createQuery(
+                "select o from Order o" +
+                        " join fetch o.member" +
+                        " join fetch o.delivery d", Order.class)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
+    }
 }
