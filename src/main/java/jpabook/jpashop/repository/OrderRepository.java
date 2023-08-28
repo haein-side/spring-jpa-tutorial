@@ -101,4 +101,17 @@ public class OrderRepository {
                         " join fetch o.delivery d", Order.class
         ).getResultList();
     }
+
+    public List<Order> findAllWithItem() {
+        return em.createQuery(
+                "select o from Order o" +
+                        " join fetch o.member m" +
+                        " join fetch o.delivery d" +
+                        " join fetch o.orderItems oi" +
+                        " join fetch oi.item i", Order.class)
+                .getResultList();
+        //Order (2)와 OrderItems(4)됨 -> Order가 4개가 됨 but, 내가 원하는 건 orders의 실제 개수인 2개만큼만 조회하고 싶음
+        // select * from orders o
+        // join order_item oi on o.order_id = oi.order_id;
+    }
 }

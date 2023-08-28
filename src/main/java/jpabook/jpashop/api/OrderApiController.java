@@ -38,14 +38,38 @@ public class OrderApiController {
     }
 
     @GetMapping("/api/v2/orders")
-    public List<OrderDTO> ordersV2() {
+    public List<OrderDTO> ordersV2() { //쿼리가 너무 많이 나와서 성능이 안나옴
         List<Order> orders = orderRepository.findAllByString(new OrderSearch());
-        List<OrderDTO> collect = orders.stream()
+        List<OrderDTO> result = orders.stream()
                 .map(o -> new OrderDTO(o))
                 .collect(Collectors.toList());
 
-        return collect;
+        return result;
     }
+
+    @GetMapping("/api/v3/orders")
+    public List<OrderDTO> ordersV3() { //Patch Join해서 개선
+        List<Order> orders = orderRepository.findAllWithItem();
+
+        // orderItem과 OneToMany join되어 order(2) -> orderItem(4) -> order(4)개가 출력
+        for (Order order : orders) {
+            System.out.println("order ref=" + order + " id=" + order.getId());
+        }
+        /*
+        id까지 동일한 애들이 중복되어서 출력됨 <= 이때 사용해주어야 하는 키워드가 distinct
+        order ref=jpabook.jpashop.domain.Order@24a494b7 id=4
+        order ref=jpabook.jpashop.domain.Order@24a494b7 id=4
+        order ref=jpabook.jpashop.domain.Order@50e9709 id=11
+        order ref=jpabook.jpashop.domain.Order@50e9709 id=11
+        * */
+
+        List<OrderDTO> result = orders.stream()
+                .map(o -> new OrderDTO(o))
+                .collect(Collectors.toList());
+
+        return result;
+    }
+
 
     @Getter
     static class OrderDTO {
