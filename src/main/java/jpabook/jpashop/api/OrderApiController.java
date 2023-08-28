@@ -48,7 +48,7 @@ public class OrderApiController {
     }
 
     @GetMapping("/api/v3/orders")
-    public List<OrderDTO> ordersV3() { //Patch Join해서 개선
+    public List<OrderDTO> ordersV3() { //Patch Join해서 개선 (쿼리 한 방으로 개선함)
         List<Order> orders = orderRepository.findAllWithItem();
 
         // orderItem과 OneToMany join되어 order(2) -> orderItem(4) -> order(4)개가 출력
@@ -57,10 +57,14 @@ public class OrderApiController {
         }
         /*
         id까지 동일한 애들이 중복되어서 출력됨 <= 이때 사용해주어야 하는 키워드가 distinct
-        order ref=jpabook.jpashop.domain.Order@24a494b7 id=4
+        order ref=jpabook.j줌pashop.domain.Order@24a494b7 id=4
         order ref=jpabook.jpashop.domain.Order@24a494b7 id=4
         order ref=jpabook.jpashop.domain.Order@50e9709 id=11
         order ref=jpabook.jpashop.domain.Order@50e9709 id=11
+
+        distinct 추가 후, 이렇게 order 원래의 개수만 나옴
+        order ref=jpabook.jpashop.domain.Order@70f7a102 id=4
+        order ref=jpabook.jpashop.domain.Order@3753ea8a id=11
         * */
 
         List<OrderDTO> result = orders.stream()

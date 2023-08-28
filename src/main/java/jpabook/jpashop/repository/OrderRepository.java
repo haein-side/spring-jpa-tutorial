@@ -104,7 +104,7 @@ public class OrderRepository {
 
     public List<Order> findAllWithItem() {
         return em.createQuery(
-                "select o from Order o" +
+                "select distinct o from Order o" +
                         " join fetch o.member m" +
                         " join fetch o.delivery d" +
                         " join fetch o.orderItems oi" +
@@ -113,5 +113,11 @@ public class OrderRepository {
         //Order (2)와 OrderItems(4)됨 -> Order가 4개가 됨 but, 내가 원하는 건 orders의 실제 개수인 2개만큼만 조회하고 싶음
         // select * from orders o
         // join order_item oi on o.order_id = oi.order_id;
+
+        //distinct의 역할
+        //DB에서 distinct는 한 줄에 있는 모든 데이터가 같아야지만 중복을 제거해줌
+        //현재는 모든 데이터가 같진 않음
+        //JPA에서 distinct의 역할은 application에 가져와서 id값이 같으면 그냥 중복처리해서 줄여줌
+        //1. db에 distinct 날려줌 2. id같으면 중복 날려서 collection에 담아줌
     }
 }
